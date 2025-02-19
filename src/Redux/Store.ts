@@ -1,11 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { loadState, saveState } from "../Utils/commonFunction";
 import storeDetailSlice, { initialState } from "./Store.Reducers";
-let preloadedState = loadState();
-if(!Object.keys(preloadedState).length){
-    preloadedState = initialState
-}
+
 export const store = configureStore({
     reducer: storeDetailSlice,
     // preloadedState,

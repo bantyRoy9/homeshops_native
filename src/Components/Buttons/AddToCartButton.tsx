@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface IAddToCart {
   itemCount: number;
-  handleClick: (item: -1 | 1) => void;
+  handleClick: (e:any,item: -1 | 1) => void;
 }
 
 const AddToCartButton: React.FC<IAddToCart> = ({ handleClick, itemCount }) => {
@@ -11,16 +11,16 @@ const AddToCartButton: React.FC<IAddToCart> = ({ handleClick, itemCount }) => {
     <View style={styles.container}>
       {itemCount > 0 ? (
         <View style={styles.cartContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => handleClick(-1)}>
+          <TouchableOpacity style={styles.button} onPress={(e) => handleClick(e,-1)}>
             <Text style={styles.buttonText}>-</Text>
           </TouchableOpacity>
           <Text style={styles.itemCount}>{itemCount}</Text>
-          <TouchableOpacity style={styles.button} onPress={() => handleClick(1)}>
+          <TouchableOpacity style={styles.button} onPress={(e) => handleClick(e,1)}>
             <Text style={styles.buttonText}>+</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <TouchableOpacity style={styles.addButton} onPress={() => handleClick(1)}>
+        <TouchableOpacity style={styles.addButton} onPress={(e) => handleClick(e,1)}>
           <Text style={styles.addButtonText}>Add</Text>
         </TouchableOpacity>
       )}

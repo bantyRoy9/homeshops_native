@@ -13,19 +13,19 @@ const HorizontalCardList: FC<{ children: ReactNode }> = ({ children }) => {
     setShowRight(contentOffset.x + layoutMeasurement.width < contentSize.width);
   };
 
-  const scrollLeft = () => {
-    scrollRef.current?.scrollTo({ x: Math.max(0, scrollRef.current?.contentOffset.x - 800), animated: true });
-  };
+  // const scrollLeft = () => {
+  //   scrollRef.current?.scrollTo({ x: Math.max(0, scrollRef.current?.contentOffset.x - 800), animated: true });
+  // };
 
-  const scrollRight = () => {
-    scrollRef.current?.scrollTo({ x: scrollRef.current?.contentOffset.x + 800, animated: true });
-  };
+  // const scrollRight = () => {
+  //   scrollRef.current?.scrollTo({ x: scrollRef.current?.contentOffset.x + 800, animated: true });
+  // };
 
   return (
     <View style={styles.container}>
       {showLeft && (
-        <TouchableOpacity onPress={scrollLeft} style={[styles.button, styles.leftButton]}>
-          <FontAwesome name="angle-left" size={24} color="black" />
+        <TouchableOpacity style={[styles.button, styles.leftButton]}>
+          {/* <FontAwesome name="angle-left" size={24} color="black" /> */}
         </TouchableOpacity>
       )}
       <ScrollView
@@ -38,7 +38,7 @@ const HorizontalCardList: FC<{ children: ReactNode }> = ({ children }) => {
         {children}
       </ScrollView>
       {showRight && (
-        <TouchableOpacity onPress={scrollRight} style={[styles.button, styles.rightButton]}>
+        <TouchableOpacity style={[styles.button, styles.rightButton]}>
           {/* <FontAwesome name="angle-right" size={24} color="black" /> */}
         </TouchableOpacity>
       )}

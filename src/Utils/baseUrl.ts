@@ -1,65 +1,41 @@
 import axios, { AxiosInstance } from "axios";
-export const BaseURL = process.env.NODE_ENV === "development" ?  process.env.REACT_APP_API_URL : process.env.REACT_APP_HOST;
-let activeRequests = 0;
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const configureAxios = (): AxiosInstance => {
-    let token = localStorage.getItem("token") || document.cookie;
     const axiosInstance: AxiosInstance = axios.create({
-        baseURL:BaseURL!,
+        baseURL: "http://192.168.1.109:5007",
         headers: {
             'Access-Control-Allow-Origin': '*',
-            'Authorization': `bearer ${token}`
         }
     });
-    const showLoading = () => {
-        if (activeRequests === 0) {
-            setTimeout(()=>{
-                if(document.getElementById("loading")){
-                    document.getElementById("loading")!.className = "loading active";
-                }
-            },100)
-        }
-        activeRequests++;
-    };
-    const hideLoading = () => {
-        activeRequests--;
-        if (activeRequests === 0) {
-            setTimeout(() => {
-                if(document.getElementById("loading")){
-                    document.getElementById("loading")!.className = "loading";
-                }
-            }, 1000);
-        }
-    };
+
     axiosInstance.interceptors.request.use(
-        config => {
-            if(!config.url?.includes('GetCompatibleInvertersForModule')){
-                showLoading();
+        async config => {
+            const token = await AsyncStorage.getItem("token");
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
             }
             return config;
         },
-        error => {
-            hideLoading();
-            return Promise.reject(error);
-        }
+        error => Promise.reject(error)
     );
+
     axiosInstance.interceptors.response.use(
-        response => {
-            hideLoading();
-            return response;
-        },
-        error => {
-            hideLoading();
+        response => response,
+        async error => {
             if (error.response?.status === 403 || error.response?.status === 401) {
-                localStorage.clear();
-                sessionStorage.clear();
-                window.location.href = '/';
+                await AsyncStorage.clear();
+                // Handle logout navigation using React Navigation if needed
             }
             return Promise.reject(error);
         }
     );
+
     return axiosInstance;
 };
-export const AxiosConfig:AxiosInstance = configureAxios()
+
+export const AxiosConfig: AxiosInstance = configureAxios();
+
 export const routes = {
-   Products:"products"
-}
+   Products: "products"
+};
